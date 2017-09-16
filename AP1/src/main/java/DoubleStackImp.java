@@ -38,8 +38,4 @@ public class DoubleStackImp implements DoubleStack {
 		return size;
 	}
 	
-	public int append(double i){
-		// to do
-		return 0;
-	}
 }

@@ -86,6 +86,11 @@ public class Main implements CalculatorInterface {
     	
         return null;
     }
+    
+    void DoesItUpdate(){
+    	
+    }
+    
     private void performOperation(Token operator, DoubleStack stack) {
     	double a = stack.pop();
     	double b = stack.pop();
