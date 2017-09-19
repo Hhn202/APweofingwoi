@@ -1,0 +1,44 @@
+
+public class TokenStackImp implements TokenStack {
+	
+	private Token[] stack;
+	private int topOfStack;
+	private int sizeOfStack;
+	
+	TokenStackImp() {
+		stack = new Token[1000];		// for now, change
+		topOfStack = -1;
+	}
+	
+	@Override
+	public void push(Token token) {
+		topOfStack ++;
+		stack[topOfStack] = token;
+	}
+
+	@Override
+	public Token pop() {
+		Token token = null;
+		if (sizeOfStack > -1){
+			token = stack[topOfStack];
+			topOfStack--;
+		}
+		return token;
+	}
+
+	@Override
+	public Token top() {
+		Token token = null;
+		if(topOfStack > -1) {
+			token = stack[topOfStack];
+		}
+		return token;
+	}
+
+	@Override
+	public int size() {
+		int size = topOfStack+1;
+		return size;
+	}
+
+}
