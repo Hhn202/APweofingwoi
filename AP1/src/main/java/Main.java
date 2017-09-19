@@ -5,11 +5,11 @@ import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
 	
-	static final int PLUS_TOKEN = '+';
-	static final int MINUS_TOKEN = '-';
-	static final int MULTIPLICATION_TOKEN = '*';
-	static final int DIVISION_TOKEN = '/';
-	static final int SQUARE_TOKEN = '^';
+	static final String PLUS_TOKEN = "+";
+	static final String MINUS_TOKEN = "-";
+	static final String MULTIPLICATION_TOKEN = "*";
+	static final String DIVISION_TOKEN = "/";
+	static final String SQUARE_TOKEN = "^";
 	static final String OPERATOR_TOKENS = "+-*/^";
 	static final String PARENTHESES = "()";
 	static final String LEFT_PARENTHESIS = "(";
@@ -124,6 +124,7 @@ public class Main implements CalculatorInterface {
     	int i = 0;
     	while (i< input.size()){
     		Token token = input.get(i);
+    		System.out.println(token.getValue());
     		i++;
     		if (token.getType()== Token.NUMBER_TYPE){
     			result.add(token);
@@ -160,15 +161,8 @@ public class Main implements CalculatorInterface {
 			TokenList oneLineList = readTokens(in.nextLine());
 			
 			
-			
-			
 			TokenList inputInRPN = shuntingYard(oneLineList);
 			out.println("ok");
-			int i = 0;
-			while(i<inputInRPN.size()){
-				out.print(inputInRPN.get(i).getValue());
-				i++;
-			}
 			out.println("rpn done");
 			Double result = rpn(inputInRPN);
 			out.println("calculation done");
