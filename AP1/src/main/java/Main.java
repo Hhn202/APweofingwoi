@@ -43,12 +43,12 @@ public class Main implements CalculatorInterface {
 	
 	boolean tokenIsOperator(String token) {
 		Scanner in = new Scanner(token);
-		return(OPERATOR_TOKENS.contains(in.toString()));
+		return(OPERATOR_TOKENS.contains(in.next()));
 	}
 	
 	boolean tokenIsParenthesis(String token) {
 		Scanner in = new Scanner(token);
-		return(PARENTHESES.contains(in.toString()));
+		return(PARENTHESES.contains(in.next()));
 	}
 
 	private Token parseNumber(String token) {
@@ -118,17 +118,18 @@ public class Main implements CalculatorInterface {
 
     public TokenList shuntingYard(TokenList tokens) {
     	TokenList input = tokens;
+    	
     	TokenList result = new TokenListImp();
     	TokenStack stack = new TokenStackImp();
     	int i = 0;
     	while (i< input.size()){
     		Token token = input.get(i);
     		i++;
-    		if (token.getType()== token.NUMBER_TYPE){
+    		if (token.getType()== Token.NUMBER_TYPE){
     			result.add(token);
     		}
-    		else if (token.getType()== token.OPERATOR_TYPE){
-    			while(stack.top().getPrecedence() >= token.getPrecedence()) {		// ??
+    		else if (token.getType()== Token.OPERATOR_TYPE){
+    			while(stack.size()!= 0 && stack.top().getPrecedence() >= token.getPrecedence()) {		// ??
     				result.add(stack.pop());
     			}
     			stack.push(token);	
@@ -157,6 +158,10 @@ public class Main implements CalculatorInterface {
     	PrintStream out = new PrintStream(System.out);
 		while(in.hasNext()) {
 			TokenList oneLineList = readTokens(in.nextLine());
+			
+			
+			
+			
 			TokenList inputInRPN = shuntingYard(oneLineList);
 			out.println("ok");
 			int i = 0;
@@ -164,7 +169,9 @@ public class Main implements CalculatorInterface {
 				out.print(inputInRPN.get(i).getValue());
 				i++;
 			}
+			out.println("rpn done");
 			Double result = rpn(inputInRPN);
+			out.println("calculation done");
 			out.println(result);
 		}
 	}
