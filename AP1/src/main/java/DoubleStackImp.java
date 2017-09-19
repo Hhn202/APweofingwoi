@@ -1,20 +1,19 @@
-
 public class DoubleStackImp implements DoubleStack {
-	
-	Double[] stack;
+
+	private Double[] stack;
 	private int topOfStack;
 	private int sizeOfStack;
-	
+
 	DoubleStackImp(){
-		stack = new Double[topOfStack];
+		stack = new Double[1000];		// for now, change
 		topOfStack = -1;
 	}
-	
+
 	public void push(Double element) {
 		topOfStack ++;
 		stack[topOfStack] = element;	
 	}
-	
+
 	public Double pop() {
 		Double token = null;
 		if (sizeOfStack > -1){
@@ -37,5 +36,4 @@ public class DoubleStackImp implements DoubleStack {
 		int size = topOfStack+1;
 		return size;
 	}
-	
 }
