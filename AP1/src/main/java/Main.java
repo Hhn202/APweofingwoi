@@ -12,6 +12,8 @@ public class Main implements CalculatorInterface {
 	static final int SQUARE_TOKEN = '^';
 	static final String OPERATOR_TOKENS = "+-*/^";
 	static final String PARENTHESES = "()";
+	static final String LEFT_PARENTHESIS = "(";
+	static final String RIGHT_PARENTHESIS = ")";
 
     public TokenList readTokens(String input) {
     	Scanner in = new Scanner(input);
@@ -50,17 +52,28 @@ public class Main implements CalculatorInterface {
 	}
 
 	private Token parseNumber(String token) {
-		Token result = new TokenImp(1, token, 0);
+		Token result = new TokenImp(1, token, -1);
 		return result;
 	}
 	
 	private Token parseOperator(String token) {
-		Token result = new TokenImp(2, token, 0);
+		Token result = null;
+		if (token.equals(PLUS_TOKEN )) {
+			result = new TokenImp(2, token, 1);
+		}else if (token.equals(MINUS_TOKEN )) {
+			result = new TokenImp(2, token, 1);
+		}else if (token.equals(MULTIPLICATION_TOKEN)) {
+			result = new TokenImp(2, token, 2);
+		}else if (token.equals(DIVISION_TOKEN)) {
+			result = new TokenImp(2, token, 2);
+		}else if (token.equals(SQUARE_TOKEN)) {
+			result = new TokenImp(2, token, 3);
+		}
 		return result;
 	}
 	
 	private Token parseParenthesis(String token) {
-		Token result = new TokenImp(3, token, 0);
+		Token result = new TokenImp(3, token, -1);
 		return result;
 	}
     
@@ -68,7 +81,7 @@ public class Main implements CalculatorInterface {
 
     public Double rpn(TokenList tokens) {
     	DoubleStack stack = new DoubleStackImp();
-    	for(int i=0;i>tokens.size();i++){
+    	for(int i=0;i<tokens.size();i++){
     		Token token = tokens.get(i);
     		if(TokenImp.NUMBER_TYPE==token.getType()){
     			double value = Double.parseDouble(token.getValue());
@@ -86,7 +99,6 @@ public class Main implements CalculatorInterface {
     	
         return null;
     }
- 
     private void performOperation(Token operator, DoubleStack stack) {
     	double a = stack.pop();
     	double b = stack.pop();
@@ -105,18 +117,56 @@ public class Main implements CalculatorInterface {
     }
 
     public TokenList shuntingYard(TokenList tokens) {
-        // TODO: Implement this
-        return null;
+    	TokenList input = tokens;
+    	TokenList result = new TokenListImp();
+    	TokenStack stack = new TokenStackImp();
+    	int i = 0;
+    	while (i< input.size()){
+    		Token token = input.get(i);
+    		i++;
+    		if (token.getType()== token.NUMBER_TYPE){
+    			result.add(token);
+    		}
+    		else if (token.getType()== token.OPERATOR_TYPE){
+    			while(stack.top().getPrecedence() >= token.getPrecedence()) {		// ??
+    				result.add(stack.pop());
+    			}
+    			stack.push(token);	
+    		}
+    		if (token.getValue().equals(LEFT_PARENTHESIS)){
+    			stack.push(token);
+    		}
+    		if (token.getValue().equals(RIGHT_PARENTHESIS)){
+    			while(!stack.top().getValue().equals(LEFT_PARENTHESIS)){
+    				result.add(stack.pop());
+    			}
+    			stack.pop();
+    		}
+    		
+    	}
+    	
+    	while (stack.size() != 0){
+    		result.add(stack.pop());
+    	}
+        
+        return result;
     }
 
     private void start() {
     	Scanner in = new Scanner(System.in);
+    	PrintStream out = new PrintStream(System.out);
 		while(in.hasNext()) {
 			TokenList oneLineList = readTokens(in.nextLine());
-			// do the rest of calculation?
+			TokenList inputInRPN = shuntingYard(oneLineList);
+			out.println("ok");
+			int i = 0;
+			while(i<inputInRPN.size()){
+				out.print(inputInRPN.get(i).getValue());
+				i++;
+			}
+			Double result = rpn(inputInRPN);
+			out.println(result);
 		}
-
-		// While there is input, read line and parse it.
 	}
     public static void main(String[] argv) {
         new Main().start();
