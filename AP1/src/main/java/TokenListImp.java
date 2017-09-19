@@ -1,18 +1,17 @@
 
 public class TokenListImp implements TokenList {
 	
-	private Token[] tokenList;					// make max 100 for now, fix later
+	private Token[] tokenList;					// make max 1000 for now, fix later
 	private int size;
 	
 	TokenListImp() {
-		tokenList = new Token[100];
+		tokenList = new Token[1000];
 		size = 0;
-		
 	}
 
 	@Override
 	public void add(Token token) {
-		tokenList [size] = token;
+		tokenList[size] = token;
 		size ++;
 
 	}
